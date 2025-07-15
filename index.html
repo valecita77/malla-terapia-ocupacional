@@ -3,18 +3,70 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Malla Interactiva Terapia Ocupacional</title>
+<title>Terapia Ocupacional UC</title>
 <style>
-  body { font-family: Arial, sans-serif; max-width: 700px; margin: 20px auto; padding: 0 15px; }
-  h2 { border-bottom: 2px solid #333; padding-bottom: 5px; margin-top: 30px;}
-  .ramo { margin: 5px 0; }
-  .ramo label { cursor: pointer; }
-  .disabled { color: #999; }
-  #reset-btn {
-    margin-top: 20px;
-    padding: 8px 15px;
-    font-size: 14px;
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px 15px;
+    background: #40e0d0; /* Turquesa claro */
+    color: #004d40; /* Turquesa oscuro para texto general */
+  }
+  h1 {
+    text-align: center;
+    color: #004d40;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px #00695c;
+  }
+  h2 {
+    border-bottom: 3px solid #008080; /* turquesa medio */
+    padding-bottom: 6px;
+    margin-top: 30px;
+    color: #008080;
+    letter-spacing: 1px;
+  }
+  .ramo {
+    margin: 8px 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    user-select: none;
     cursor: pointer;
+    display: inline-block;
+  }
+  /* Ramo aprobado (tachado, turquesa oscuro con texto blanco) */
+  .ramo.aprobado {
+    background-color: #00796b; /* turquesa oscuro */
+    color: white;
+    text-decoration: line-through;
+  }
+  /* Ramo habilitado (blanco con texto turquesa) */
+  .ramo.habilitado {
+    background-color: white;
+    color: #008080; /* turquesa */
+  }
+  /* Ramo bloqueado (gris claro) */
+  .ramo.bloqueado {
+    background-color: #e0e0e0;
+    color: #777;
+    cursor: default;
+  }
+  #reset-btn {
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #004d40;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease;
+    display: block;
+  }
+  #reset-btn:hover {
+    background-color: #00695c;
   }
 </style>
 </head>
@@ -27,9 +79,7 @@
 <button id="reset-btn">Borrar progreso</button>
 
 <script>
-  // Datos de los ramos: código, nombre, prerrequisitos (array)
   const ramos = [
-    // Primer semestre
     {codigo: "MAT1000", nombre: "PRECÁLCULO", prereq: []},
     {codigo: "BIO141C", nombre: "BIOLOGÍA DE LA CÉLULA", prereq: []},
     {codigo: "MET101A", nombre: "INTEGRADO DE CIENCIAS BÁSICAS PARA FARMACOLOGÍA", prereq: []},
@@ -37,7 +87,6 @@
     {codigo: "OCU101A", nombre: "DESARROLLO CREATIVO Y DESTREZAS TERAPÉUTICAS", prereq: []},
     {codigo: "OCU102A", nombre: "TERAPIA OCUPACIONAL: PROFESIÓN Y DISCIPLINA", prereq: []},
 
-    // Segundo semestre
     {codigo: "FIS109A", nombre: "FÍSICA", prereq: []},
     {codigo: "BIO135T", nombre: "FISIOLOGÍA", prereq: ["BIO141C"]},
     {codigo: "MET201A", nombre: "MORFOLOGÍA GENERAL Y DE SISTEMAS", prereq: []},
@@ -45,7 +94,6 @@
     {codigo: "OCU201A", nombre: "DESARROLLO LÚDICO Y DESTREZAS TERAPÉUTICAS", prereq: ["OCU101A"]},
     {codigo: "FORMACION_TEOLOGICA", nombre: "FORMACIÓN TEOLÓGICA", prereq: []},
 
-    // Tercer semestre
     {codigo: "CSS301A", nombre: "ANÁLISIS DEL MOVIMIENTO OCUPACIONAL", prereq: ["FIS109A", "MET201A"]},
     {codigo: "MET301A", nombre: "FISIOPATOLOGÍA GENERAL Y DE SISTEMAS", prereq: ["BIO135T"]},
     {codigo: "PSI2502", nombre: "PSICOLOGÍA DEL TRABAJO Y LA OCUPACIÓN", prereq: []},
@@ -53,7 +101,6 @@
     {codigo: "OCU301A", nombre: "HABILIDADES Y TÉCNICAS TERAPÉUTICAS I", prereq: ["OCU201A"]},
     {codigo: "FORMACION_GENERAL_3", nombre: "FORMACIÓN GENERAL", prereq: []},
 
-    // Cuarto semestre (mínimo 40 créditos)
     {codigo: "CSS401A", nombre: "PATOLOGÍAS DEL SISTEMA MUSCULOESQUELÉTICO", prereq: ["CSS301A"]},
     {codigo: "MET401A", nombre: "FARMACOLOGÍA", prereq: ["MET101A"]},
     {codigo: "MET402A", nombre: "BIOESTADÍSTICA", prereq: ["MAT1000"]},
@@ -61,7 +108,6 @@
     {codigo: "OCU401A", nombre: "HABILIDADES TÉCNICAS Y TERAPÉUTICAS II", prereq: ["OCU301A"]},
     {codigo: "FORMACION_GENERAL_4", nombre: "FORMACIÓN GENERAL", prereq: []},
 
-    // Quinto semestre
     {codigo: "OCU501A", nombre: "ERGONOMÍA Y SALUD OCUPACIONAL", prereq: ["CSS401A"]},
     {codigo: "OCU502A", nombre: "SEMIOLOGÍA Y ANAMNESIS PARA CIENCIAS DE LA SALUD", prereq: ["OCU401A"]},
     {codigo: "MET501A", nombre: "SALUD PÚBLICA", prereq: ["MET402A"]},
@@ -69,7 +115,6 @@
     {codigo: "MET503A", nombre: "ALTERACIONES DEL SISTEMA NERVIOSO EN ADULTOS", prereq: ["CSS302A"]},
     {codigo: "FIL2001", nombre: "FILOSOFÍA ¿PARA QUÉ?", prereq: []},
 
-    // Sexto semestre
     {codigo: "OCU601A", nombre: "TECNOLOGÍAS DE APOYO A LA REHABILITACIÓN E INCLUSIÓN SOCIAL", prereq: ["OCU501A"]},
     {codigo: "OCU602A", nombre: "RAZONAMIENTO PROFESIONAL", prereq: ["OCU501A"]},
     {codigo: "OCU603A", nombre: "INTERVENCIÓN Y REHABILITACIÓN SOCIOLABORAL", prereq: ["OCU501A"]},
@@ -77,7 +122,6 @@
     {codigo: "CSS601A", nombre: "BIOÉTICA", prereq: ["FIL2001"]},
     {codigo: "FORMACION_GENERAL_6", nombre: "FORMACIÓN GENERAL", prereq: []},
 
-    // Séptimo semestre
     {codigo: "OCU701A", nombre: "ORTÓTICA", prereq: ["OCU601A"]},
     {codigo: "OCU702A", nombre: "EVALUACIÓN E INTERVENCIÓN EN NIÑOS Y ADOLESCENTES", prereq: ["MET502A", "OCU602A"]},
     {codigo: "OCU703A", nombre: "EVALUACIÓN E INTERVENCIÓN PSICOSOCIAL Y COMUNITARIA", prereq: ["OCU603A"]},
@@ -85,39 +129,31 @@
     {codigo: "FORMACION_GENERAL_7A", nombre: "FORMACIÓN GENERAL", prereq: []},
     {codigo: "FORMACION_GENERAL_7B", nombre: "FORMACIÓN GENERAL", prereq: []},
 
-    // Octavo semestre
     {codigo: "OCU801A", nombre: "EVALUACIÓN E INTERVENCIÓN EN SALUD FÍSICA ADULTO Y PERSONA MAYOR", prereq: ["OCU701A", "CSS601A"]},
     {codigo: "OPT", nombre: "OPTATIVO DE PROFUNDIZACIÓN", prereq: []},
     {codigo: "MET801A", nombre: "GESTIÓN EN ORGANIZACIONES DE SALUD", prereq: ["MET402A"]},
     {codigo: "OCU802A", nombre: "EVALUACIÓN E INTERVENCIÓN EN SALUD MENTAL ADULTO Y PERSONA MAYOR", prereq: ["MET401A", "OCU601A"]},
     {codigo: "OCU803A", nombre: "UNIDAD DE INVESTIGACIÓN EN LA CIENCIA DE LA OCUPACIÓN", prereq: ["OCU704A"]},
-    {codigo: "FORMACION_GENERAL_8", nombre: "FORMACIÓN GENERAL", prereq: []},
 
-    // Noveno semestre
     {codigo: "OCU901A", nombre: "INTERNADO SALUD FÍSICA", prereq: ["OCU801A", "MET801A", "OCU802A", "OCU803A"]},
     {codigo: "OCU902A", nombre: "INTERNADO SALUD MENTAL", prereq: ["MET801A", "OCU802A", "OCU803A"]},
     {codigo: "OCU905A", nombre: "INTERNADO ELECTIVO", prereq: ["MET801A", "OCU802A", "OCU803A"]},
 
-    // Décimo semestre
     {codigo: "OCU903A", nombre: "INTERNADO INFANTO JUVENIL", prereq: ["MET801A", "OCU802A", "OCU803A"]},
     {codigo: "OCU904A", nombre: "INTERNADO SOCIOCOMUNITARIO", prereq: ["MET801A", "OCU802A", "OCU803A"]}
   ];
 
-  // Estado: qué ramos están aprobados (cargado desde localStorage o vacío)
   let estado = JSON.parse(localStorage.getItem("estadoRamos")) || {};
 
-  // Guardar estado en localStorage
   function guardarEstado() {
     localStorage.setItem("estadoRamos", JSON.stringify(estado));
   }
 
-  // Comprobar si un ramo está habilitado
   function estaHabilitado(ramo) {
     if (ramo.prereq.length === 0) return true;
     return ramo.prereq.every(pr => estado[pr]);
   }
 
-  // Crear interfaz
   function render() {
     const cont = document.getElementById("malla");
     cont.innerHTML = "";
@@ -128,20 +164,6 @@
       semestres.push({
         num: i,
         ramos: ramos.filter(r => {
-          // Defino qué ramos son de qué semestre
-          // Los ramos están en orden, pero mejor agrupar por bloques usando índices
-          // Aquí asigno por cantidad y posición en array:
-          // 6 ramos primer semestre
-          // 6 segundo
-          // 6 tercero
-          // 6 cuarto
-          // 6 quinto
-          // 6 sexto
-          // 6 séptimo
-          // 6 octavo
-          // 3 noveno
-          // 2 décimo
-
           const index = ramos.indexOf(r);
           if (i === 1) return index < 6;
           if (i === 2) return index >= 6 && index < 12;
@@ -164,39 +186,44 @@
       cont.appendChild(h2);
 
       s.ramos.forEach(ramo => {
-        const div = document.createElement("div");
-        div.className = "ramo";
+        const span = document.createElement("span");
+        span.className = "ramo";
 
         const habilitado = estaHabilitado(ramo);
         const aprobado = !!estado[ramo.codigo];
 
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.id = ramo.codigo;
-        checkbox.disabled = !habilitado;
-        checkbox.checked = aprobado;
+        // Estilos segun estado
+        if (aprobado) {
+          span.classList.add("aprobado");
+        } else if (habilitado) {
+          span.classList.add("habilitado");
+        } else {
+          span.classList.add("bloqueado");
+        }
 
-        checkbox.addEventListener("change", e => {
-          estado[ramo.codigo] = e.target.checked;
-          guardarEstado();
-          render(); // re-render para actualizar habilitados
-        });
+        span.textContent = `${ramo.nombre} (${ramo.codigo})`;
 
-        const label = document.createElement("label");
-        label.htmlFor = ramo.codigo;
-        label.textContent = `${ramo.nombre} (${ramo.codigo})`;
+        // Sólo permitir click si está habilitado
+        if (habilitado) {
+          span.style.cursor = "pointer";
+          span.addEventListener("click", () => {
+            if (estado[ramo.codigo]) {
+              // Si ya aprobado, desmarcar
+              delete estado[ramo.codigo];
+            } else {
+              estado[ramo.codigo] = true;
+            }
+            guardarEstado();
+            render();
+          });
+        }
 
-        if (!habilitado) label.className = "disabled";
-
-        div.appendChild(checkbox);
-        div.appendChild(label);
-
-        cont.appendChild(div);
+        cont.appendChild(span);
+        cont.appendChild(document.createElement("br"));
       });
     });
   }
 
-  // Botón para borrar progreso
   document.getElementById("reset-btn").addEventListener("click", () => {
     if(confirm("¿Seguro que quieres borrar todo tu progreso?")) {
       estado = {};
