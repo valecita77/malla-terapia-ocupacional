@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -36,7 +37,59 @@
   <div id="malla"></div>
 
   <script>
-    // Código JavaScript incluido anteriormente
+    const cursos = [...document.querySelectorAll("script")].find(s => s.textContent.includes("const cursos = [")).textContent.match(/const cursos = \[.*?\];/s);
+    if (!cursos) console.error("No se encontró el arreglo de cursos");
+
+    const evalScript = document.createElement("script");
+    evalScript.textContent = `
+      ${cursos[0]}
+
+      const mallaDiv = document.getElementById("malla");
+      const semestres = [...new Set(cursos.map(c => c.semestre))].sort((a, b) => a - b);
+
+      semestres.forEach(sem => {
+        const semDiv = document.createElement("div");
+        semDiv.className = "semestre";
+        semDiv.innerHTML = `<h2>Semestre \${sem}</h2>`;
+
+        cursos.filter(c => c.semestre === sem).forEach(curso => {
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.id = curso.codigo;
+          checkbox.disabled = curso.prerequisitos.length > 0;
+
+          const label = document.createElement("label");
+          label.htmlFor = curso.codigo;
+          label.textContent = ` \${curso.nombre} (\${curso.codigo})`;
+
+          const container = document.createElement("div");
+          container.className = "ramo";
+          container.appendChild(checkbox);
+          container.appendChild(label);
+          semDiv.appendChild(container);
+        });
+
+        mallaDiv.appendChild(semDiv);
+      });
+
+      const estadoCursos = {};
+      document.querySelectorAll("input[type=checkbox]").forEach(checkbox => {
+        checkbox.addEventListener("change", () => {
+          estadoCursos[checkbox.id] = checkbox.checked;
+
+          cursos.forEach(curso => {
+            if (!estadoCursos[curso.codigo]) {
+              const cumple = curso.prerequisitos.every(pre => estadoCursos[pre]);
+              const el = document.getElementById(curso.codigo);
+              if (el && el.disabled && cumple) {
+                el.disabled = false;
+              }
+            }
+          });
+        });
+      });
+    `;
+    document.body.appendChild(evalScript);
   </script>
 </body>
 </html>
