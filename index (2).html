@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terapia Ocupacional UC</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #40e0d0;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #004d40;
+      margin-bottom: 30px;
+    }
+    #malla {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding-bottom: 20px;
+    }
+    .semestre {
+      flex: 0 0 auto;
+      background-color: #e0f7fa;
+      border-radius: 10px;
+      padding: 10px;
+      min-width: 200px;
+    }
+    .semestre h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #00695c;
+      text-align: center;
+    }
+    .ramo {
+      margin: 6px 0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      user-select: none;
+      cursor: pointer;
+      display: block;
+    }
+    .ramo.aprobado {
+      background-color: #00796b;
+      color: white;
+      text-decoration: line-through;
+    }
+    .ramo.habilitado {
+      background-color: white;
+      color: #008080;
+    }
+    .ramo.bloqueado {
+      background-color: #e0e0e0;
+      color: #777;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Interactiva - Terapia Ocupacional UC</h1>
+  <div id="malla"></div>
+  <script>
+    const ramos = 
+[
+  { codigo: "MAT1000", nombre: "PRECÁLCULO", sem: 1, prereq: [] },
+  { codigo: "BIO141C", nombre: "BIOLOGÍA DE LA CÉLULA", sem: 1, prereq: [] },
+  { codigo: "MET101A", nombre: "INTEGRADO DE CIENCIAS BÁSICAS PARA FARMACOLOGÍA", sem: 1, prereq: [] },
+  { codigo: "MET102A", nombre: "FUNDAMENTOS PSICOLÓGICOS PARA TERAPIA OCUPACIONAL", sem: 1, prereq: [] },
+  { codigo: "OCU101A", nombre: "DESARROLLO CREATIVO Y DESTREZAS TERAPÉUTICAS", sem: 1, prereq: [] },
+  { codigo: "OCU102A", nombre: "TERAPIA OCUPACIONAL: PROFESIÓN Y DISCIPLINA", sem: 1, prereq: [] },
+  { codigo: "FIS109A", nombre: "FÍSICA", sem: 2, prereq: [] },
+  { codigo: "BIO135T", nombre: "FISIOLOGÍA", sem: 2, prereq: ["BIO141C"] },
+  { codigo: "MET201A", nombre: "MORFOLOGÍA GENERAL Y DE SISTEMAS", sem: 2, prereq: [] },
+  { codigo: "MET202A", nombre: "CICLO VITAL Y DESARROLLO HUMANO", sem: 2, prereq: ["MET102A"] },
+  { codigo: "OCU201A", nombre: "DESARROLLO LÚDICO Y DESTREZAS TERAPÉUTICAS", sem: 2, prereq: ["OCU101A"] },
+  { codigo: "TEO1", nombre: "FORMACIÓN TEOLÓGICA", sem: 2, prereq: [] },
+  { codigo: "CSS301A", nombre: "ANÁLISIS DEL MOVIMIENTO OCUPACIONAL", sem: 3, prereq: ["FIS109A", "MET201A"] },
+  { codigo: "MET301A", nombre: "FISIOPATOLOGÍA GENERAL Y DE SISTEMAS", sem: 3, prereq: ["BIO135T"] },
+  { codigo: "PSI2502", nombre: "PSICOLOGÍA DEL TRABAJO Y LA OCUPACIÓN", sem: 3, prereq: [] },
+  { codigo: "CSS302A", nombre: "NEUROCIENCIAS APLICADAS A CIENCIAS DE LA SALUD", sem: 3, prereq: ["BIO135T"] },
+  { codigo: "OCU301A", nombre: "HABILIDADES Y TÉCNICAS TERAPÉUTICAS I", sem: 3, prereq: ["OCU201A"] },
+  { codigo: "FG3", nombre: "FORMACIÓN GENERAL", sem: 3, prereq: [] },
+  { codigo: "CSS401A", nombre: "PATOLOGÍAS DEL SISTEMA MUSCULOESQUELÉTICO", sem: 4, prereq: ["CSS301A"] },
+  { codigo: "MET401A", nombre: "FARMACOLOGÍA", sem: 4, prereq: ["MET101A"] },
+  { codigo: "MET402A", nombre: "BIOESTADÍSTICA", sem: 4, prereq: ["MAT1000"] },
+  { codigo: "MET403A", nombre: "ALTERACIONES DEL SISTEMA NERVIOSO EN NIÑOS Y ADOLESCENTES", sem: 4, prereq: ["CSS302A"] },
+  { codigo: "OCU401A", nombre: "HABILIDADES TÉCNICAS Y TERAPÉUTICAS II", sem: 4, prereq: ["OCU301A"] },
+  { codigo: "FG4", nombre: "FORMACIÓN GENERAL", sem: 4, prereq: [] },
+  { codigo: "OCU501A", nombre: "ERGONOMÍA Y SALUD OCUPACIONAL", sem: 5, prereq: ["CSS401A"] },
+  { codigo: "OCU502A", nombre: "SEMIOLOGÍA Y ANAMNESIS PARA CIENCIAS DE LA SALUD", sem: 5, prereq: ["OCU401A"] },
+  { codigo: "MET501A", nombre: "SALUD PÚBLICA", sem: 5, prereq: ["MET402A"] },
+  { codigo: "MET502A", nombre: "SALUD MENTAL INFANTO JUVENIL", sem: 5, prereq: ["MET202A", "MET403A"] },
+  { codigo: "MET503A", nombre: "ALTERACIONES DEL SISTEMA NERVIOSO EN ADULTOS", sem: 5, prereq: ["CSS302A"] },
+  { codigo: "FIL2001", nombre: "FILOSOFÍA ¿PARA QUÉ?", sem: 5, prereq: [] },
+  { codigo: "OCU601A", nombre: "TECNOLOGÍAS DE APOYO A LA REHABILITACIÓN E INCLUSIÓN SOCIAL", sem: 6, prereq: ["OCU501A"] },
+  { codigo: "OCU602A", nombre: "RAZONAMIENTO PROFESIONAL", sem: 6, prereq: ["OCU501A"] },
+  { codigo: "OCU603A", nombre: "INTERVENCIÓN Y REHABILITACIÓN SOCIOLABORAL", sem: 6, prereq: ["OCU501A"] },
+  { codigo: "MET601A", nombre: "SALUD MENTAL ADULTO Y PERSONA MAYOR", sem: 6, prereq: ["MET503A"] },
+  { codigo: "CSS601A", nombre: "BIOÉTICA", sem: 6, prereq: ["FIL2001"] },
+  { codigo: "FG6", nombre: "FORMACIÓN GENERAL", sem: 6, prereq: [] },
+  { codigo: "OCU701A", nombre: "ORTÓTICA", sem: 7, prereq: ["OCU601A"] },
+  { codigo: "OCU702A", nombre: "EVALUACIÓN E INTERVENCIÓN EN NIÑOS Y ADOLESCENTES", sem: 7, prereq: ["MET502A", "OCU602A"] },
+  { codigo: "OCU703A", nombre: "EVALUACIÓN E INTERVENCIÓN PSICOSOCIAL Y COMUNITARIA", sem: 7, prereq: ["OCU603A"] },
+  { codigo: "OCU704A", nombre: "INVESTIGACIÓN APLICADA EN CIENCIA DE LA OCUPACIÓN", sem: 7, prereq: ["MET402A", "CSS601A"] },
+  { codigo: "FG7", nombre: "FORMACIÓN GENERAL", sem: 7, prereq: [] },
+  { codigo: "FG7_2", nombre: "FORMACIÓN GENERAL", sem: 7, prereq: [] },
+  { codigo: "OCU801A", nombre: "EVALUACIÓN E INTERVENCIÓN EN SALUD FÍSICA ADULTO Y PERSONA MAYOR", sem: 8, prereq: ["OCU701A", "CSS601A"] },
+  { codigo: "OPT", nombre: "OPTATIVO DE PROFUNDIZACIÓN", sem: 8, prereq: [] },
+  { codigo: "MET801A", nombre: "GESTIÓN EN ORGANIZACIONES DE SALUD", sem: 8, prereq: ["MET402A"] },
+  { codigo: "OCU802A", nombre: "EVALUACIÓN E INTERVENCIÓN EN SALUD MENTAL ADULTO Y PERSONA MAYOR", sem: 8, prereq: ["MET401A", "OCU601A"] },
+  { codigo: "OCU803A", nombre: "UNIDAD DE INVESTIGACIÓN EN LA CIENCIA DE LA OCUPACIÓN", sem: 8, prereq: ["OCU704A"] },
+  { codigo: "FG8", nombre: "FORMACIÓN GENERAL", sem: 8, prereq: [] },
+  { codigo: "OCU901A", nombre: "INTERNADO SALUD FÍSICA", sem: 9, prereq: ["OCU801A", "MET801A", "OCU802A", "OCU803A"] },
+  { codigo: "OCU902A", nombre: "INTERNADO SALUD MENTAL", sem: 9, prereq: ["MET801A", "OCU802A", "OCU803A"] },
+  { codigo: "OCU905A", nombre: "INTERNADO ELECTIVO", sem: 9, prereq: ["MET801A", "OCU802A", "OCU803A"] },
+  { codigo: "OCU903A", nombre: "INTERNADO INFANTO JUVENIL", sem: 10, prereq: ["MET801A", "OCU802A", "OCU803A"] },
+  { codigo: "OCU904A", nombre: "INTERNADO SOCIOCOMUNITARIO", sem: 10, prereq: ["MET801A", "OCU802A", "OCU803A"] }
+]
+;
+
+    let estado = JSON.parse(localStorage.getItem("estadoRamos")) || {};
+
+    function guardarEstado() {
+      localStorage.setItem("estadoRamos", JSON.stringify(estado));
+    }
+
+    function estaHabilitado(ramo) {
+      if (ramo.prereq.length === 0) return true;
+      return ramo.prereq.every(pr => estado[pr]);
+    }
+
+    function render() {
+      const cont = document.getElementById("malla");
+      cont.innerHTML = "";
+      const semestres = [];
+      for (let i = 1; i <= 10; i++) {
+        semestres.push({ num: i, ramos: ramos.filter(r => r.sem === i) });
+      }
+
+      semestres.forEach(s => {
+        const col = document.createElement("div");
+        col.className = "semestre";
+        const h2 = document.createElement("h2");
+        h2.textContent = `Semestre ${s.num}`;
+        col.appendChild(h2);
+        s.ramos.forEach(ramo => {
+          const span = document.createElement("span");
+          span.className = "ramo";
+          const habilitado = estaHabilitado(ramo);
+          const aprobado = !!estado[ramo.codigo];
+          if (aprobado) {
+            span.classList.add("aprobado");
+          } else if (habilitado) {
+            span.classList.add("habilitado");
+          } else {
+            span.classList.add("bloqueado");
+          }
+          span.textContent = ramo.nombre;
+          if (habilitado) {
+            span.addEventListener("click", () => {
+              if (estado[ramo.codigo]) {
+                delete estado[ramo.codigo];
+              } else {
+                estado[ramo.codigo] = true;
+              }
+              guardarEstado();
+              render();
+            });
+          }
+          col.appendChild(span);
+        });
+        cont.appendChild(col);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
