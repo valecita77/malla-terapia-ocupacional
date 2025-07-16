@@ -2,181 +2,235 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Terapia Ocupacional UC</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #40e0d0;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      transition: background-color 0.3s ease;
     }
-    h1 {
+    header {
+      padding: 1rem;
       text-align: center;
-      color: #004d40;
-      margin-bottom: 30px;
+      background-color: #a8dadc;
+      color: #1d3557;
     }
-    #malla {
+    select {
+      margin: 1rem auto;
+      display: block;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    .malla {
       display: flex;
-      overflow-x: auto;
-      gap: 20px;
-      padding-bottom: 20px;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 1rem;
     }
     .semestre {
-      flex: 0 0 auto;
-      background-color: #e0f7fa;
-      border-radius: 10px;
-      padding: 10px;
-      min-width: 200px;
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      align-items: center;
     }
-    .semestre h2 {
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: #00695c;
-      text-align: center;
+    .semestre h3 {
+      width: 150px;
+      margin: 0;
+      flex-shrink: 0;
     }
     .ramo {
-      margin: 6px 0;
-      padding: 6px 10px;
-      border-radius: 6px;
-      user-select: none;
+      padding: 0.5rem 1rem;
+      background-color: #bde0fe;
+      color: #1d3557;
+      border-radius: 8px;
       cursor: pointer;
-      display: block;
+      user-select: none;
+      opacity: 0.6;
+      transition: all 0.3s ease;
     }
-    .ramo.aprobado {
-      background-color: #00796b;
-      color: white;
+    .ramo.enabled {
+      opacity: 1;
+    }
+    .ramo.completed {
+      background-color: #69a6d0 !important;
       text-decoration: line-through;
-    }
-    .ramo.habilitado {
-      background-color: white;
-      color: #008080;
-    }
-    .ramo.bloqueado {
-      background-color: #e0e0e0;
-      color: #777;
-      cursor: default;
     }
   </style>
 </head>
 <body>
-  <h1>Malla Interactiva - Terapia Ocupacional UC</h1>
-  <div id="malla"></div>
+  <header>
+    <h1>Terapia Ocupacional UC</h1>
+    <label for="color-selector">Selecciona un color pastel:</label>
+    <select id="color-selector">
+      <option value="azul">Azul pastel</option>
+      <option value="rosa">Rosa pastel</option>
+      <option value="verde">Verde pastel</option>
+      <option value="amarillo">Amarillo pastel</option>
+      <option value="lila">Lila pastel</option>
+    </select>
+  </header>
+
+  <section class="malla" id="malla">
+    <!-- SEMESTRE I -->
+    <div class="semestre">
+      <h3>Semestre I</h3>
+      <div class="ramo enabled" data-id="MAT1000">Precálculo (MAT1000)</div>
+      <div class="ramo enabled" data-id="BIO141C">Biología de la Célula (BIO141C)</div>
+      <div class="ramo enabled" data-id="TOC110C">Introducción a la Terapia Ocupacional (TOC110C)</div>
+    </div>
+    <!-- SEMESTRE II -->
+    <div class="semestre">
+      <h3>Semestre II</h3>
+      <div class="ramo" data-id="QUI150C" data-prerreq="BIO141C">Química General (QUI150C)</div>
+      <div class="ramo" data-id="BIO142C" data-prerreq="BIO141C">Biología del Desarrollo (BIO142C)</div>
+      <div class="ramo" data-id="TOC120C" data-prerreq="TOC110C">Bases de la Ocupación Humana (TOC120C)</div>
+      <div class="ramo" data-id="TOC121C" data-prerreq="TOC110C">Desarrollo Humano y Ocupación (TOC121C)</div>
+    </div>
+    <!-- SEMESTRE III -->
+    <div class="semestre">
+      <h3>Semestre III</h3>
+      <div class="ramo" data-id="TOC131C" data-prerreq="BIO142C">Intervención en Niños (TOC131C)</div>
+      <div class="ramo" data-id="TOC132C" data-prerreq="TOC121C">Intervención en Adultos (TOC132C)</div>
+      <div class="ramo" data-id="TOC133C" data-prerreq="QUI150C">Bases Neurológicas (TOC133C)</div>
+      <div class="ramo" data-id="TOC134C" data-prerreq="TOC120C">Evaluación y Diagnóstico (TOC134C)</div>
+    </div>
+    <!-- SEMESTRE IV -->
+    <div class="semestre">
+      <h3>Semestre IV</h3>
+      <div class="ramo" data-id="TOC141C" data-prerreq="TOC131C">Intervención en Salud Mental (TOC141C)</div>
+      <div class="ramo" data-id="TOC142C" data-prerreq="TOC132C">Evaluación en Niños (TOC142C)</div>
+      <div class="ramo" data-id="TOC143C" data-prerreq="TOC133C">Intervención en Discapacidad Física (TOC143C)</div>
+      <div class="ramo" data-id="TOC144C" data-prerreq="TOC134C">Contextos Institucionales (TOC144C)</div>
+    </div>
+    <!-- SEMESTRE V -->
+    <div class="semestre">
+      <h3>Semestre V</h3>
+      <div class="ramo" data-id="TOC151C" data-prerreq="TOC144C">Intervención en Salud Mental (TOC151C)</div>
+      <div class="ramo" data-id="TOC152C" data-prerreq="TOC143C">Desempeño Ocupacional en Niños (TOC152C)</div>
+      <div class="ramo" data-id="TOC153C" data-prerreq="TOC142C">Evaluación en Discapacidad Física (TOC153C)</div>
+      <div class="ramo" data-id="TOC154C" data-prerreq="TOC132C">Contextos Institucionales y Comunitarios (TOC154C)</div>
+    </div>
+    <!-- SEMESTRE VI -->
+    <div class="semestre">
+      <h3>Semestre VI</h3>
+      <div class="ramo" data-id="TOC161C" data-prerreq="TOC151C">Rehabilitación Psicosocial (TOC161C)</div>
+      <div class="ramo" data-id="TOC162C" data-prerreq="TOC152C">Intervención con Niños y Adolescentes (TOC162C)</div>
+      <div class="ramo" data-id="TOC163C" data-prerreq="TOC153C">Intervención en Discapacidad Física (TOC163C)</div>
+      <div class="ramo" data-id="TOC164C" data-prerreq="TOC154C">Promoción de la Participación Ocupacional (TOC164C)</div>
+    </div>
+    <!-- SEMESTRE VII -->
+    <div class="semestre">
+      <h3>Semestre VII</h3>
+      <div class="ramo" data-id="TOC171C" data-prerreq="TOC161C">Práctica en Salud Mental (TOC171C)</div>
+      <div class="ramo" data-id="TOC172C" data-prerreq="TOC162C">Práctica con Niños y Adolescentes (TOC172C)</div>
+      <div class="ramo" data-id="TOC173C" data-prerreq="TOC163C">Práctica en Discapacidad Física (TOC173C)</div>
+      <div class="ramo" data-id="TOC174C" data-prerreq="TOC164C">Práctica en Comunidad (TOC174C)</div>
+    </div>
+    <!-- SEMESTRE VIII -->
+    <div class="semestre">
+      <h3>Semestre VIII</h3>
+      <div class="ramo" data-id="TOC181C">Seminario de Investigación I (TOC181C)</div>
+      <div class="ramo" data-id="TOC182C">Ética Profesional (TOC182C)</div>
+      <div class="ramo" data-id="TOC183C">Taller de Integración I (TOC183C)</div>
+      <div class="ramo" data-id="TOC184C">Electivo Profesional I (TOC184C)</div>
+    </div>
+    <!-- SEMESTRE IX -->
+    <div class="semestre">
+      <h3>Semestre IX</h3>
+      <div class="ramo" data-id="TOC191C">Seminario de Investigación II (TOC191C)</div>
+      <div class="ramo" data-id="TOC192C">Gestión y Liderazgo (TOC192C)</div>
+      <div class="ramo" data-id="TOC193C">Taller de Integración II (TOC193C)</div>
+      <div class="ramo" data-id="TOC194C">Electivo Profesional II (TOC194C)</div>
+    </div>
+    <!-- SEMESTRE X -->
+    <div class="semestre">
+      <h3>Semestre X</h3>
+      <div class="ramo" data-id="TOC195C">Internado Profesional I (TOC195C)</div>
+      <div class="ramo" data-id="TOC196C">Internado Profesional II (TOC196C)</div>
+      <div class="ramo" data-id="TOC197C">Taller de Titulación (TOC197C)</div>
+    </div>
+  </section>
+
   <script>
-    const ramos = 
-[
-  { codigo: "MAT1000", nombre: "PRECÁLCULO", sem: 1, prereq: [] },
-  { codigo: "BIO141C", nombre: "BIOLOGÍA DE LA CÉLULA", sem: 1, prereq: [] },
-  { codigo: "MET101A", nombre: "INTEGRADO DE CIENCIAS BÁSICAS PARA FARMACOLOGÍA", sem: 1, prereq: [] },
-  { codigo: "MET102A", nombre: "FUNDAMENTOS PSICOLÓGICOS PARA TERAPIA OCUPACIONAL", sem: 1, prereq: [] },
-  { codigo: "OCU101A", nombre: "DESARROLLO CREATIVO Y DESTREZAS TERAPÉUTICAS", sem: 1, prereq: [] },
-  { codigo: "OCU102A", nombre: "TERAPIA OCUPACIONAL: PROFESIÓN Y DISCIPLINA", sem: 1, prereq: [] },
-  { codigo: "FIS109A", nombre: "FÍSICA", sem: 2, prereq: [] },
-  { codigo: "BIO135T", nombre: "FISIOLOGÍA", sem: 2, prereq: ["BIO141C"] },
-  { codigo: "MET201A", nombre: "MORFOLOGÍA GENERAL Y DE SISTEMAS", sem: 2, prereq: [] },
-  { codigo: "MET202A", nombre: "CICLO VITAL Y DESARROLLO HUMANO", sem: 2, prereq: ["MET102A"] },
-  { codigo: "OCU201A", nombre: "DESARROLLO LÚDICO Y DESTREZAS TERAPÉUTICAS", sem: 2, prereq: ["OCU101A"] },
-  { codigo: "TEO1", nombre: "FORMACIÓN TEOLÓGICA", sem: 2, prereq: [] },
-  { codigo: "CSS301A", nombre: "ANÁLISIS DEL MOVIMIENTO OCUPACIONAL", sem: 3, prereq: ["FIS109A", "MET201A"] },
-  { codigo: "MET301A", nombre: "FISIOPATOLOGÍA GENERAL Y DE SISTEMAS", sem: 3, prereq: ["BIO135T"] },
-  { codigo: "PSI2502", nombre: "PSICOLOGÍA DEL TRABAJO Y LA OCUPACIÓN", sem: 3, prereq: [] },
-  { codigo: "CSS302A", nombre: "NEUROCIENCIAS APLICADAS A CIENCIAS DE LA SALUD", sem: 3, prereq: ["BIO135T"] },
-  { codigo: "OCU301A", nombre: "HABILIDADES Y TÉCNICAS TERAPÉUTICAS I", sem: 3, prereq: ["OCU201A"] },
-  { codigo: "FG3", nombre: "FORMACIÓN GENERAL", sem: 3, prereq: [] },
-  { codigo: "CSS401A", nombre: "PATOLOGÍAS DEL SISTEMA MUSCULOESQUELÉTICO", sem: 4, prereq: ["CSS301A"] },
-  { codigo: "MET401A", nombre: "FARMACOLOGÍA", sem: 4, prereq: ["MET101A"] },
-  { codigo: "MET402A", nombre: "BIOESTADÍSTICA", sem: 4, prereq: ["MAT1000"] },
-  { codigo: "MET403A", nombre: "ALTERACIONES DEL SISTEMA NERVIOSO EN NIÑOS Y ADOLESCENTES", sem: 4, prereq: ["CSS302A"] },
-  { codigo: "OCU401A", nombre: "HABILIDADES TÉCNICAS Y TERAPÉUTICAS II", sem: 4, prereq: ["OCU301A"] },
-  { codigo: "FG4", nombre: "FORMACIÓN GENERAL", sem: 4, prereq: [] },
-  { codigo: "OCU501A", nombre: "ERGONOMÍA Y SALUD OCUPACIONAL", sem: 5, prereq: ["CSS401A"] },
-  { codigo: "OCU502A", nombre: "SEMIOLOGÍA Y ANAMNESIS PARA CIENCIAS DE LA SALUD", sem: 5, prereq: ["OCU401A"] },
-  { codigo: "MET501A", nombre: "SALUD PÚBLICA", sem: 5, prereq: ["MET402A"] },
-  { codigo: "MET502A", nombre: "SALUD MENTAL INFANTO JUVENIL", sem: 5, prereq: ["MET202A", "MET403A"] },
-  { codigo: "MET503A", nombre: "ALTERACIONES DEL SISTEMA NERVIOSO EN ADULTOS", sem: 5, prereq: ["CSS302A"] },
-  { codigo: "FIL2001", nombre: "FILOSOFÍA ¿PARA QUÉ?", sem: 5, prereq: [] },
-  { codigo: "OCU601A", nombre: "TECNOLOGÍAS DE APOYO A LA REHABILITACIÓN E INCLUSIÓN SOCIAL", sem: 6, prereq: ["OCU501A"] },
-  { codigo: "OCU602A", nombre: "RAZONAMIENTO PROFESIONAL", sem: 6, prereq: ["OCU501A"] },
-  { codigo: "OCU603A", nombre: "INTERVENCIÓN Y REHABILITACIÓN SOCIOLABORAL", sem: 6, prereq: ["OCU501A"] },
-  { codigo: "MET601A", nombre: "SALUD MENTAL ADULTO Y PERSONA MAYOR", sem: 6, prereq: ["MET503A"] },
-  { codigo: "CSS601A", nombre: "BIOÉTICA", sem: 6, prereq: ["FIL2001"] },
-  { codigo: "FG6", nombre: "FORMACIÓN GENERAL", sem: 6, prereq: [] },
-  { codigo: "OCU701A", nombre: "ORTÓTICA", sem: 7, prereq: ["OCU601A"] },
-  { codigo: "OCU702A", nombre: "EVALUACIÓN E INTERVENCIÓN EN NIÑOS Y ADOLESCENTES", sem: 7, prereq: ["MET502A", "OCU602A"] },
-  { codigo: "OCU703A", nombre: "EVALUACIÓN E INTERVENCIÓN PSICOSOCIAL Y COMUNITARIA", sem: 7, prereq: ["OCU603A"] },
-  { codigo: "OCU704A", nombre: "INVESTIGACIÓN APLICADA EN CIENCIA DE LA OCUPACIÓN", sem: 7, prereq: ["MET402A", "CSS601A"] },
-  { codigo: "FG7", nombre: "FORMACIÓN GENERAL", sem: 7, prereq: [] },
-  { codigo: "FG7_2", nombre: "FORMACIÓN GENERAL", sem: 7, prereq: [] },
-  { codigo: "OCU801A", nombre: "EVALUACIÓN E INTERVENCIÓN EN SALUD FÍSICA ADULTO Y PERSONA MAYOR", sem: 8, prereq: ["OCU701A", "CSS601A"] },
-  { codigo: "OPT", nombre: "OPTATIVO DE PROFUNDIZACIÓN", sem: 8, prereq: [] },
-  { codigo: "MET801A", nombre: "GESTIÓN EN ORGANIZACIONES DE SALUD", sem: 8, prereq: ["MET402A"] },
-  { codigo: "OCU802A", nombre: "EVALUACIÓN E INTERVENCIÓN EN SALUD MENTAL ADULTO Y PERSONA MAYOR", sem: 8, prereq: ["MET401A", "OCU601A"] },
-  { codigo: "OCU803A", nombre: "UNIDAD DE INVESTIGACIÓN EN LA CIENCIA DE LA OCUPACIÓN", sem: 8, prereq: ["OCU704A"] },
-  { codigo: "FG8", nombre: "FORMACIÓN GENERAL", sem: 8, prereq: [] },
-  { codigo: "OCU901A", nombre: "INTERNADO SALUD FÍSICA", sem: 9, prereq: ["OCU801A", "MET801A", "OCU802A", "OCU803A"] },
-  { codigo: "OCU902A", nombre: "INTERNADO SALUD MENTAL", sem: 9, prereq: ["MET801A", "OCU802A", "OCU803A"] },
-  { codigo: "OCU905A", nombre: "INTERNADO ELECTIVO", sem: 9, prereq: ["MET801A", "OCU802A", "OCU803A"] },
-  { codigo: "OCU903A", nombre: "INTERNADO INFANTO JUVENIL", sem: 10, prereq: ["MET801A", "OCU802A", "OCU803A"] },
-  { codigo: "OCU904A", nombre: "INTERNADO SOCIOCOMUNITARIO", sem: 10, prereq: ["MET801A", "OCU802A", "OCU803A"] }
-]
-;
+    const colores = {
+      azul: { fondo: "#e0f7fa", malla: "#b2ebf2", texto: "#006064", completado: "#4dd0e1" },
+      rosa: { fondo: "#fce4ec", malla: "#f8bbd0", texto: "#880e4f", completado: "#f48fb1" },
+      verde: { fondo: "#e8f5e9", malla: "#a5d6a7", texto: "#1b5e20", completado: "#66bb6a" },
+      amarillo: { fondo: "#fffde7", malla: "#fff176", texto: "#f57f17", completado: "#ffd54f" },
+      lila: { fondo: "#f3e5f5", malla: "#ce93d8", texto: "#4a148c", completado: "#ba68c8" }
+    };
 
-    let estado = JSON.parse(localStorage.getItem("estadoRamos")) || {};
+    const selector = document.getElementById("color-selector");
+    const ramos = document.querySelectorAll(".ramo");
 
-    function guardarEstado() {
-      localStorage.setItem("estadoRamos", JSON.stringify(estado));
-    }
-
-    function estaHabilitado(ramo) {
-      if (ramo.prereq.length === 0) return true;
-      return ramo.prereq.every(pr => estado[pr]);
-    }
-
-    function render() {
-      const cont = document.getElementById("malla");
-      cont.innerHTML = "";
-      const semestres = [];
-      for (let i = 1; i <= 10; i++) {
-        semestres.push({ num: i, ramos: ramos.filter(r => r.sem === i) });
-      }
-
-      semestres.forEach(s => {
-        const col = document.createElement("div");
-        col.className = "semestre";
-        const h2 = document.createElement("h2");
-        h2.textContent = `Semestre ${s.num}`;
-        col.appendChild(h2);
-        s.ramos.forEach(ramo => {
-          const span = document.createElement("span");
-          span.className = "ramo";
-          const habilitado = estaHabilitado(ramo);
-          const aprobado = !!estado[ramo.codigo];
-          if (aprobado) {
-            span.classList.add("aprobado");
-          } else if (habilitado) {
-            span.classList.add("habilitado");
-          } else {
-            span.classList.add("bloqueado");
-          }
-          span.textContent = ramo.nombre;
-          if (habilitado) {
-            span.addEventListener("click", () => {
-              if (estado[ramo.codigo]) {
-                delete estado[ramo.codigo];
-              } else {
-                estado[ramo.codigo] = true;
-              }
-              guardarEstado();
-              render();
-            });
-          }
-          col.appendChild(span);
-        });
-        cont.appendChild(col);
+    function aplicarColor(color) {
+      const c = colores[color];
+      document.body.style.backgroundColor = c.fondo;
+      ramos.forEach(r => {
+        if (!r.classList.contains("completed")) {
+          r.style.backgroundColor = c.malla;
+          r.style.color = c.texto;
+        }
       });
     }
 
-    render();
+    function actualizarHabilitados() {
+      const completados = new Set([...document.querySelectorAll(".ramo.completed")].map(el => el.dataset.id));
+      ramos.forEach(ramo => {
+        const req = ramo.dataset.prerreq;
+        if (!req || completados.has(req)) {
+          ramo.classList.add("enabled");
+          ramo.classList.remove("disabled");
+        } else {
+          ramo.classList.remove("enabled");
+          ramo.classList.add("disabled");
+        }
+      });
+    }
+
+    ramos.forEach(ramo => {
+      // Inicialmente habilitar solo los que no tienen prerrequisitos
+      if (!ramo.dataset.prerreq) {
+        ramo.classList.add("enabled");
+      } else {
+        ramo.classList.remove("enabled");
+        ramo.classList.add("disabled");
+      }
+
+      ramo.addEventListener("click", () => {
+        if (!ramo.classList.contains("enabled")) return;
+        ramo.classList.toggle("completed");
+        if (ramo.classList.contains("completed")) {
+          ramo.style.backgroundColor = colores[selector.value].completado;
+          ramo.style.color = "white";
+        } else {
+          ramo.style.backgroundColor = colores[selector.value].malla;
+          ramo.style.color = colores[selector.value].texto;
+        }
+        actualizarHabilitados();
+      });
+    });
+
+    selector.addEventListener("change", () => {
+      aplicarColor(selector.value);
+      // Reaplicar colores a ramos completados
+      ramos.forEach(ramo => {
+        if (ramo.classList.contains("completed")) {
+          ramo.style.backgroundColor = colores[selector.value].completado;
+          ramo.style.color = "white";
+        } else {
+          ramo.style.backgroundColor = colores[selector.value].malla;
+          ramo.style.color = colores[selector.value].texto;
+        }
+      });
+    });
+
+    window.onload = () => {
+      aplicarColor(selector.value);
+      actualizarHabilitados();
+    };
   </script>
 </body>
 </html>
