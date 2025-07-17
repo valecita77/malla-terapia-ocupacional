@@ -16,31 +16,42 @@
     background-color: #a8dadc;
     color: #1d3557;
   }
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
   select {
-    margin: 1rem auto;
+    margin: 0 auto 1rem auto;
     display: block;
     padding: 0.5rem;
     font-size: 1rem;
     border-radius: 6px;
     border: 1px solid #ccc;
+    min-width: 200px;
   }
   .malla {
     display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
+    flex-direction: column; /* semestres vertical */
+    gap: 2.5rem;
     padding: 1rem;
+    max-width: 1200px;
+    margin: auto;
   }
   .semestre {
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
   }
   .semestre h3 {
-    width: 200px;
-    margin: 0;
-    flex-shrink: 0;
+    margin: 0 0 0.8rem 0;
     font-weight: 700;
+    font-size: 1.3rem;
+  }
+  .ramo-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
   .ramo {
     padding: 0.5rem 1rem;
@@ -50,15 +61,16 @@
     cursor: pointer;
     user-select: none;
     opacity: 0.5;
+    border: 2px solid transparent;
     transition: all 0.3s ease;
     white-space: nowrap;
+    box-sizing: border-box;
   }
   .ramo.enabled {
     opacity: 1;
+    border-color: #5a9bd6;
   }
   .ramo.completed {
-    background-color: #49759c !important;
-    color: white !important;
     text-decoration: line-through;
   }
 </style>
@@ -77,108 +89,125 @@
 </header>
 
 <section class="malla" id="malla">
-
-  <!-- Semestre I -->
   <div class="semestre">
     <h3>Semestre I</h3>
-    <div class="ramo enabled" data-id="MAT1000">PRECÁLCULO (MAT1000)</div>
-    <div class="ramo enabled" data-id="BIO141C">BIOLOGÍA DE LA CÉLULA (BIO141C)</div>
-    <div class="ramo enabled" data-id="MET101A">INTEGRADO DE CIENCIAS BÁSICAS PARA FARMACOLOGÍA (MET101A)</div>
-    <div class="ramo enabled" data-id="MET102A">FUNDAMENTOS PSICOLÓGICOS PARA TERAPIA OCUPACIONAL (MET102A)</div>
-    <div class="ramo enabled" data-id="OCU101A">DESARROLLO CREATIVO Y DESTREZAS TERAPÉUTICAS (OCU101A)</div>
-    <div class="ramo enabled" data-id="OCU102A">TERAPIA OCUPACIONAL: PROFESIÓN Y DISCIPLINA (OCU102A)</div>
+    <div class="ramo-container">
+      <div class="ramo enabled" data-id="MAT1000" data-prerreq="">PRECÁLCULO (MAT1000)</div>
+      <div class="ramo enabled" data-id="BIO141C" data-prerreq="">BIOLOGÍA DE LA CÉLULA (BIO141C)</div>
+      <div class="ramo enabled" data-id="MET101A" data-prerreq="">INTEGRADO DE CIENCIAS BÁSICAS PARA FARMACOLOGÍA (MET101A)</div>
+      <div class="ramo enabled" data-id="MET102A" data-prerreq="">FUNDAMENTOS PSICOLÓGICOS PARA TERAPIA OCUPACIONAL (MET102A)</div>
+      <div class="ramo enabled" data-id="OCU101A" data-prerreq="">DESARROLLO CREATIVO Y DESTREZAS TERAPÉUTICAS (OCU101A)</div>
+      <div class="ramo enabled" data-id="OCU102A" data-prerreq="">TERAPIA OCUPACIONAL: PROFESIÓN Y DISCIPLINA (OCU102A)</div>
+    </div>
   </div>
 
-  <!-- Semestre II -->
   <div class="semestre">
     <h3>Semestre II</h3>
-    <div class="ramo" data-id="FIS109A" data-prerreq="">FÍSICA (FIS109A)</div>
-    <div class="ramo" data-id="BIO135T" data-prerreq="BIO141C">FISIOLOGÍA (BIO135T)</div>
-    <div class="ramo" data-id="MET201A" data-prerreq="">MORFOLOGÍA GENERAL Y DE SISTEMAS (MET201A)</div>
-    <div class="ramo" data-id="MET202A" data-prerreq="MET102A">CICLO VITAL Y DESARROLLO HUMANO (MET202A)</div>
-    <div class="ramo" data-id="OCU201A" data-prerreq="OCU101A">DESARROLLO LÚDICO Y DESTREZAS TERAPÉUTICAS (OCU201A)</div>
-    <div class="ramo enabled" data-id="FT">FORMACIÓN TEOLÓGICA</div>
+    <div class="ramo-container">
+      <div class="ramo enabled" data-id="FIS109A" data-prerreq="">FÍSICA (FIS109A)</div>
+      <div class="ramo" data-id="BIO135T" data-prerreq="BIO141C">FISIOLOGÍA (BIO135T)</div>
+      <div class="ramo enabled" data-id="MET201A" data-prerreq="">MORFOLOGÍA GENERAL Y DE SISTEMAS (MET201A)</div>
+      <div class="ramo" data-id="MET202A" data-prerreq="MET102A">CICLO VITAL Y DESARROLLO HUMANO (MET202A)</div>
+      <div class="ramo" data-id="OCU201A" data-prerreq="OCU101A">DESARROLLO LÚDICO Y DESTREZAS TERAPÉUTICAS (OCU201A)</div>
+      <div class="ramo enabled" data-id="TEO201A" data-prerreq="">FORMACIÓN TEOLÓGICA</div>
+    </div>
   </div>
 
-  <!-- Semestre III -->
   <div class="semestre">
     <h3>Semestre III</h3>
-    <div class="ramo" data-id="CSS301A" data-prerreq="FIS109A,MET201A">ANÁLISIS DEL MOVIMIENTO OCUPACIONAL (CSS301A)</div>
-    <div class="ramo" data-id="MET301A" data-prerreq="BIO135T">FISIOPATOLOGÍA GENERAL Y DE SISTEMAS (MET301A)</div>
-    <div class="ramo enabled" data-id="PSI2502">PSICOLOGÍA DEL TRABAJO Y LA OCUPACIÓN (PSI2502)</div>
-    <div class="ramo" data-id="CSS302A" data-prerreq="BIO135T">NEUROCIENCIAS APLICADAS A CIENCIAS DE LA SALUD (CSS302A)</div>
-    <div class="ramo" data-id="OCU301A" data-prerreq="OCU201A">HABILIDADES Y TÉCNICAS TERAPÉUTICAS I (OCU301A)</div>
-    <div class="ramo enabled" data-id="FG3">FORMACIÓN GENERAL</div>
+    <div class="ramo-container">
+      <div class="ramo" data-id="CSS301A" data-prerreq="FIS109A,MET201A">ANÁLISIS DEL MOVIMIENTO OCUPACIONAL (CSS301A)</div>
+      <div class="ramo" data-id="MET301A" data-prerreq="BIO135T">FISIOPATOLOGÍA GENERAL Y DE SISTEMAS (MET301A)</div>
+      <div class="ramo enabled" data-id="PSI2502" data-prerreq="">PSICOLOGÍA DEL TRABAJO Y LA OCUPACIÓN (PSI2502)</div>
+      <div class="ramo" data-id="CSS302A" data-prerreq="BIO135T">NEUROCIENCIAS APLICADAS A CIENCIAS DE LA SALUD (CSS302A)</div>
+      <div class="ramo" data-id="OCU301A" data-prerreq="OCU201A">HABILIDADES Y TÉCNICAS TERAPÉUTICAS I (OCU301A)</div>
+      <div class="ramo enabled" data-id="GEN301A" data-prerreq="">FORMACIÓN GENERAL</div>
+    </div>
   </div>
 
-  <!-- Semestre IV -->
   <div class="semestre">
     <h3>Semestre IV</h3>
-    <div class="ramo" data-id="CSS401A" data-prerreq="CSS301A">PATOLOGÍAS DEL SISTEMA MUSCULOESQUÉLETICO (CSS401A)</div>
-    <div class="ramo" data-id="MET401A" data-prerreq="MET101A">FARMACOLOGÍA (MET401A)</div>
-    <div class="ramo" data-id="MET402A" data-prerreq="MAT1000">BIOESTADÍSTICA (MET402A)</div>
-    <div class="ramo" data-id="MET403A" data-prerreq="CSS302A">ALTERACIONES DEL SISTEMA NERVIOSO EN NIÑOS Y ADOLESCENTES (MET403A)</div>
-    <div class="ramo" data-id="OCU401A" data-prerreq="OCU301A">HABILIDADES TÉCNICAS Y TERAPÉUTICAS II (OCU401A)</div>
-    <div class="ramo enabled" data-id="FG4">FORMACIÓN GENERAL</div>
+    <div class="ramo-container">
+      <div class="ramo" data-id="CSS401A" data-prerreq="CSS301A">PATOLOGÍAS DEL SISTEMA MUSCULOESQUÉLETICO (CSS401A)</div>
+      <div class="ramo" data-id="MET401A" data-prerreq="MET101A">FARMACOLOGÍA (MET401A)</div>
+      <div class="ramo" data-id="MET402A" data-prerreq="MAT1000">BIOESTADÍSTICA (MET402A)</div>
+      <div class="ramo" data-id="MET403A" data-prerreq="CSS302A">ALTERACIONES DEL SISTEMA NERVIOSO EN NIÑOS Y ADOLESCENTES (MET403A)</div>
+      <div class="ramo" data-id="OCU401A" data-prerreq="OCU301A">HABILIDADES TÉCNICAS Y TERAPÉUTICAS II (OCU401A)</div>
+      <div class="ramo enabled" data-id="GEN401A" data-prerreq="">FORMACIÓN GENERAL</div>
+    </div>
   </div>
 
-  <!-- Semestre V -->
   <div class="semestre">
     <h3>Semestre V</h3>
-    <div class="ramo" data-id="OCU501A" data-prerreq="CSS401A">ERGONOMÍA Y SALUD OCUPACIONAL (OCU501A)</div>
-    <div class="ramo" data-id="OCU502A" data-prerreq="OCU401A">SEMIOLOGÍA Y ANAMNESIS PARA CIENCIAS DE LA SALUD (OCU502A)</div>
-    <div class="ramo" data-id="MET501A" data-prerreq="MET402A">SALUD PÚBLICA (MET501A)</div>
-    <div class="ramo" data-id="MET502A" data-prerreq="MET202A,MET403A">SALUD MENTAL INFANTO JUVENIL (MET502A)</div>
-    <div class="ramo" data-id="MET503A" data-prerreq="CSS302A">ALTERACIONES DEL SISTEMA NERVIOSO EN ADULTOS (MET503A)</div>
-    <div class="ramo enabled" data-id="FIL2001">FILOSOFÍA ¿PARA QUÉ? (FIL2001)</div>
+    <div class="ramo-container">
+      <div class="ramo" data-id="OCU501A" data-prerreq="CSS401A">ERGONOMÍA Y SALUD OCUPACIONAL (OCU501A)</div>
+      <div class="ramo" data-id="OCU502A" data-prerreq="OCU401A">SEMIOLOGÍA Y ANAMNESIS PARA CIENCIAS DE LA SALUD (OCU502A)</div>
+      <div class="ramo" data-id="MET501A" data-prerreq="MET402A">SALUD PÚBLICA (MET501A)</div>
+      <div class="ramo" data-id="MET502A" data-prerreq="MET202A,MET403A">SALUD MENTAL INFANTO JUVENIL (MET502A)</div>
+      <div class="ramo" data-id="MET503A" data-prerreq="CSS302A">ALTERACIONES DEL SISTEMA NERVIOSO EN ADULTOS (MET503A)</div>
+      <div class="ramo enabled" data-id="FIL2001" data-prerreq="">FILOSOFÍA ¿PARA QUÉ? (FIL2001)</div>
+    </div>
   </div>
 
-  <!-- Semestre VI -->
   <div class="semestre">
     <h3>Semestre VI</h3>
-    <div class="ramo" data-id="OCU601A" data-prerreq="OCU501A">TECNOLOGÍAS DE APOYO A LA REHABILITACIÓN E INCLUSIÓN SOCIAL (OCU601A)</div>
-    <div class="ramo" data-id="OCU602A" data-prerreq="OCU501A">RAZONAMIENTO PROFESIONAL (OCU602A)</div>
-    <div class="ramo" data-id="OCU603A" data-prerreq="OCU501A">INTERVENCIÓN Y REHABILITACIÓN SOCIOLABORAL (OCU603A)</div>
-    <div class="ramo" data-id="MET601A" data-prerreq="MET503A">SALUD MENTAL ADULTO Y PERSONA MAYOR (MET601A)</div>
-    <div class="ramo" data-id="CSS601A" data-prerreq="FIL2001">BIOÉTICA (CSS601A)</div>
-    <div class="ramo enabled" data-id="FG6">FORMACIÓN GENERAL</div>
+    <div class="ramo-container">
+      <div class="ramo" data-id="OCU601A" data-prerreq="OCU501A">TECNOLOGÍAS DE APOYO A LA REHABILITACIÓN E INCLUSIÓN SOCIAL (OCU601A)</div>
+      <div class="ramo" data-id="OCU602A" data-prerreq="OCU501A">RAZONAMIENTO PROFESIONAL (OCU602A)</div>
+      <div class="ramo" data-id="OCU603A" data-prerreq="OCU501A">INTERVENCIÓN Y REHABILITACIÓN SOCIOLABORAL (OCU603A)</div>
+      <div class="ramo" data-id="MET601A" data-prerreq="MET503A">SALUD MENTAL ADULTO Y PERSONA MAYOR (MET601A)</div>
+      <div class="ramo" data-id="CSS601A" data-prerreq="FIL2001">BIOÉTICA (CSS601A)</div>
+      <div class="ramo enabled" data-id="GEN601A" data-prerreq="">FORMACIÓN GENERAL</div>
+    </div>
   </div>
 
-  <!-- Semestre VII -->
   <div class="semestre">
     <h3>Semestre VII</h3>
-    <div class="ramo" data-id="OCU701A" data-prerreq="OCU601A">ORTÓTICA (OCU701A)</div>
-    <div class="ramo" data-id="OCU702A" data-prerreq="MET502A,OCU602A">EVALUACIÓN E INTERVENCIÓN EN NIÑOS Y ADOLESCENTES (OCU702A)</div>
-    <div class="ramo" data-id="OCU703A" data-prerreq="OCU603A">EVALUACIÓN E INTERVENCIÓN PSICOSOCIAL Y COMUNITARIA (OCU703A)</div>
-    <div class="ramo" data-id="OCU704A" data-prerreq="MET402A,CSS601A">INVESTIGACIÓN APLICADA EN CIENCIA DE LA OCUPACIÓN (OCU704A)</div>
-    <div class="ramo enabled" data-id="FG7a">FORMACIÓN GENERAL</div>
-    <div class="ramo enabled" data-id="FG7b">FORMACIÓN GENERAL</div>
+    <div class="ramo-container">
+      <div class="ramo" data-id="OCU701A" data-prerreq="OCU601A">ORTÓTICA (OCU701A)</div>
+      <div class="ramo" data-id="OCU702A" data-prerreq="MET502A,OCU602A">EVALUACIÓN E INTERVENCIÓN EN NIÑOS Y ADOLESCENTES (OCU702A)</div>
+      <div class="ramo" data-id="OCU703A" data-prerreq="OCU603A">EVALUACIÓN E INTERVENCIÓN PSICOSOCIAL Y COMUNITARIA (OCU703A)</div>
+      <div class="ramo" data-id="OCU704A" data-prerreq="MET402A,CSS601A">INVESTIGACIÓN APLICADA EN CIENCIA DE LA OCUPACIÓN (OCU704A)</div>
+      <div class="ramo enabled" data-id="GEN701A" data-prerreq="">FORMACIÓN GENERAL</div>
+      <div class="ramo enabled" data-id="GEN702A" data-prerreq="">FORMACIÓN GENERAL</div>
+    </div>
   </div>
 
-  <!-- Semestre VIII -->
   <div class="semestre">
     <h3>Semestre VIII</h3>
-    <div class="ramo" data-id="OCU801A" data-prerreq="OCU701A,CSS601A">EVALUACIÓN E INTERVENCIÓN EN SALUD FÍSICA ADULTO Y PERSONA MAYOR (OCU801A)</div>
-    <div class="ramo enabled" data-id="OPT">OPTATIVO DE PROFUNDIZACIÓN (OPT)</div>
-    <div class="ramo" data-id="MET801A" data-prerreq="MET402A">GESTIÓN EN ORGANIZACIONES DE SALUD (MET801A)</div>
-    <div class="ramo" data-id="OCU802A" data-prerreq="MET401A,OCU601A">EVALUACIÓN E INTERVENCIÓN EN SALUD MENTAL ADULTO Y PERSONA MAYOR (OCU802A)</div>
-    <div class="ramo" data-id="OCU803A" data-prerreq="OCU704A">UNIDAD DE INVESTIGACIÓN EN LA CIENCIA DE LA OCUPACIÓN (OCU803A)</div>
-    <div class="ramo enabled" data-id="FG8">FORMACIÓN GENERAL</div>
+    <div class="ramo-container">
+      <div class="ramo" data-id="OCU801A" data-prerreq="OCU701A,CSS601A">EVALUACIÓN E INTERVENCIÓN EN SALUD FÍSICA ADULTO Y PERSONA MAYOR (OCU801A)</div>
+      <div class="ramo enabled" data-id="OPT" data-prerreq="">OPTATIVO DE PROFUNDIZACIÓN (OPT)</div>
+      <div class="ramo" data-id="MET801A" data-prerreq="MET402A">GESTIÓN EN ORGANIZACIONES DE SALUD (MET801A)</div>
+      <div class="ramo" data-id="OCU802A" data-prerreq="MET401A,OCU601A">EVALUACIÓN E INTERVENCIÓN EN SALUD MENTAL ADULTO Y PERSONA MAYOR (OCU802A)</div>
+      <div class="ramo" data-id="OCU803A" data-prerreq="OCU704A">UNIDAD DE INVESTIGACIÓN EN LA CIENCIA DE LA OCUPACIÓN (OCU803A)</div>
+      <div class="ramo enabled" data-id="GEN801A" data-prerreq="">FORMACIÓN GENERAL</div>
+    </div>
   </div>
 
-  <!-- Semestre IX -->
+  <div class="semestre">
+    <h3>Licenciatura en Ciencia de la Ocupación</h3>
+  </div>
+
   <div class="semestre">
     <h3>Semestre IX</h3>
-    <div class="ramo" data-id="OCU901A" data-prerreq="OCU801A,MET801A,OCU802A,OCU803A">INTERNADO SALUD FÍSICA (OCU901A)</div>
-    <div class="ramo" data-id="OCU902A" data-prerreq="MET801A,OCU802A,OCU803A">INTERNADO SALUD MENTAL (OCU902A)</div>
-    <div class="ramo" data-id="OCU905A" data-prerreq="MET801A,OCU802A,OCU803A">INTERNADO ELECTIVO (OCU905A)</div>
+    <div class="ramo-container">
+      <div class="ramo" data-id="OCU901A" data-prerreq="OCU801A,MET801A,OCU802A,OCU803A">INTERNADO SALUD FÍSICA (OCU901A)</div>
+      <div class="ramo" data-id="OCU902A" data-prerreq="MET801A,OCU802A,OCU803A">INTERNADO SALUD MENTAL (OCU902A)</div>
+      <div class="ramo" data-id="OCU905A" data-prerreq="MET801A,OCU802A,OCU803A">INTERNADO ELECTIVO (OCU905A)</div>
+    </div>
   </div>
 
-  <!-- Semestre X -->
   <div class="semestre">
     <h3>Semestre X</h3>
-    <div class="ramo" data-id="OCU903A" data-prerreq="MET801A,OCU802A,OCU803A">INTERNADO INFANTO JUVENIL (OCU903A)</div>
-    <div class="ramo" data-id="OCU904A" data-prerreq="MET801A,OCU802A,OCU803A">INTERNADO SOCIOCOMUNITARIO (OCU904A)</div>
+    <div class="ramo-container">
+      <div class="ramo" data-id="OCU903A" data-prerreq="MET801A,OCU802A,OCU803A">INTERNADO INFANTO JUVENIL (OCU903A)</div>
+      <div class="ramo" data-id="OCU904A" data-prerreq="MET801A,OCU802A,OCU803A">INTERNADO SOCIOCOMUNITARIO (OCU904A)</div>
+    </div>
+  </div>
+
+  <div class="semestre">
+    <h3>Título Profesional de Terapeuta Ocupacional</h3>
   </div>
 
 </section>
@@ -195,7 +224,6 @@
   const selector = document.getElementById("color-selector");
   const ramos = document.querySelectorAll(".ramo");
 
-  // Función para aplicar color
   function aplicarColor(color) {
     const c = colores[color];
     document.body.style.backgroundColor = c.fondo;
@@ -203,11 +231,11 @@
       if (!r.classList.contains("completed")) {
         r.style.backgroundColor = c.malla;
         r.style.color = c.texto;
+        r.style.borderColor = c.texto;
       }
     });
   }
 
-  // Actualiza habilitados según prerrequisitos y aprobados
   function actualizarHabilitados() {
     const completados = new Set([...document.querySelectorAll(".ramo.completed")].map(el => el.dataset.id));
 
@@ -230,22 +258,23 @@
     });
   }
 
-  // Inicialización y eventos de click
   ramos.forEach(ramo => {
-    // Habilitar solo si no tiene prerrequisitos (o ya se habilitará en actualizarHabilitados)
     if (!ramo.dataset.prerreq || ramo.dataset.prerreq.trim() === "") {
       ramo.classList.add("enabled");
     }
-
     ramo.addEventListener("click", () => {
       if (!ramo.classList.contains("enabled")) return;
       ramo.classList.toggle("completed");
       if (ramo.classList.contains("completed")) {
-        ramo.style.backgroundColor = colores[selector.value].completado;
+        const c = colores[selector.value];
+        ramo.style.backgroundColor = c.completado;
         ramo.style.color = "white";
+        ramo.style.borderColor = c.completado;
       } else {
-        ramo.style.backgroundColor = colores[selector.value].malla;
-        ramo.style.color = colores[selector.value].texto;
+        const c = colores[selector.value];
+        ramo.style.backgroundColor = c.malla;
+        ramo.style.color = c.texto;
+        ramo.style.borderColor = c.texto;
       }
       actualizarHabilitados();
     });
@@ -254,21 +283,6 @@
   selector.addEventListener("change", () => {
     aplicarColor(selector.value);
     ramos.forEach(ramo => {
-      if (ramo.classList.contains("completed")) {
-        ramo.style.backgroundColor = colores[selector.value].completado;
-        ramo.style.color = "white";
-      } else {
-        ramo.style.backgroundColor = colores[selector.value].malla;
-        ramo.style.color = colores[selector.value].texto;
-      }
-    });
-  });
+      if (ramo.classList.contains("
 
-  window.onload = () => {
-    aplicarColor(selector.value);
-    actualizarHabilitados();
-  };
-</script>
-</body>
-</html>
 
